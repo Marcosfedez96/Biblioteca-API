@@ -14,7 +14,7 @@ namespace Biblioteca.Controllers
         [HttpGet]
         public ActionResult<Socio> GetItAll()
         {
-            return Ok(_content.sociosAfiliados);
+            return Ok(BasesDeDatos.SociosAfiliados);
         }
     }
 }

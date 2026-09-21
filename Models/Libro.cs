@@ -2,12 +2,12 @@
 {
     public class Libro
     {
-        public int id { set; get;}
-        public string titulo { set; get; }
-        public string genero { set; get; }
-        public string autor { set; get; }
-        public int stock { set; get; }
-        public long ISBN { set; get; }
+        public int Id { set; get;}
+        public required string Titulo { set; get; }
+        public required string Genero { set; get; }
+        public required string Autor { set; get; }
+        public int Stock { set; get; }
+        public long Isbn { set; get; }
 
     }
 }
