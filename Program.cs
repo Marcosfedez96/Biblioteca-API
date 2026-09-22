@@ -1,15 +1,7 @@
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("PermitirTodo", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -17,7 +9,6 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
-app.UseCors("PermitirTodo");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

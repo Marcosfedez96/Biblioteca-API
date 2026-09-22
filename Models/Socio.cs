@@ -2,10 +2,10 @@
 {
     public class Socio
     {
-        public int id { set; get; }
-        public string nombre { set; get; }
-        public string telefono { set; get; }
-        public string direccion { set; get; }
+        public int Id { set; get; }
+        public string Nombre { set; get; }
+        public string Telefono { set; get; }
+        public string Direccion { set; get; }
 
     }
 }

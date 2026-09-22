@@ -16,7 +16,7 @@ namespace Biblioteca.Controllers
             return Ok(BasesDeDatos.Libros);
         }
         [HttpGet("{id:int}")]
-        public ActionResult<Libro> GetById([FromRoute] int id)
+        public ActionResult<Libro> GetById([FromRoute]int id)
         {
             var libroEncontrado = BasesDeDatos.Libros.FirstOrDefault(x => x.Id == id);
             if(libroEncontrado == null)

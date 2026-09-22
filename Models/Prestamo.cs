@@ -2,10 +2,10 @@
 {
     public class Prestamo
     {
-        public int id { set; get; }
-        public DateTime fechaDePrestamo { set; get; }
-        public DateTime fechaDeDevolucion { set; get; }
-        public Libro libroPrestado { set; get; }
-        public Socio datosDeSocio { set; get; }
+        public int Id { set; get; }
+        public DateTime FechaDePrestamo { set; get; }
+        public DateTime FechaDeDevolucion { set; get; }
+        public Libro LibroPrestado { set; get; }
+        public Socio DatosDeSocio { set; get; }
     }
 }
