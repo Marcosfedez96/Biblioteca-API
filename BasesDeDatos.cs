@@ -40,36 +40,36 @@ namespace Biblioteca
         {
             new Prestamo{
                 Id = 1,
-                FechaDePrestamo = new DateTime(2020,1,1),
-                FechaDeDevolucion = new DateTime(2020,2,1),
+                FechaDePrestamo = new DateOnly(2020,1,1),
+                FechaDeDevolucion = new DateOnly(2020,2,1),
                 LibroPrestado = Libros.FirstOrDefault(x => x.Id == 1),
                 DatosDeSocio = SociosAfiliados.FirstOrDefault(x => x.Id == 3)
             },
             new Prestamo{
                 Id = 2,
-                FechaDePrestamo = new DateTime(2021,3,10),
-                FechaDeDevolucion = new DateTime(2021,4,10),
+                FechaDePrestamo = new DateOnly(2021,3,10),
+                FechaDeDevolucion = new DateOnly(2027,4,10),
                 LibroPrestado = Libros.FirstOrDefault(x => x.Id == 3),
                 DatosDeSocio = SociosAfiliados.FirstOrDefault(x => x.Id == 1)
             },
             new Prestamo{
                 Id = 3,
-                FechaDePrestamo = new DateTime(2022,6,5),
-                FechaDeDevolucion = new DateTime(2022,6,20),
+                FechaDePrestamo = new (2022,6,5),
+                FechaDeDevolucion = new DateOnly(2022,6,20),
                 LibroPrestado = Libros.FirstOrDefault(x => x.Id == 7),
                 DatosDeSocio = SociosAfiliados.FirstOrDefault(x => x.Id == 5)
             },
             new Prestamo{
                 Id = 4,
-                FechaDePrestamo = new DateTime(2023,8,1),
-                FechaDeDevolucion = new DateTime(2023,8,15),
+                FechaDePrestamo = new DateOnly(2023,8,1),
+                FechaDeDevolucion = new DateOnly(2028,8,15),
                 LibroPrestado = Libros.FirstOrDefault(x => x.Id == 2),
                 DatosDeSocio = SociosAfiliados.FirstOrDefault(x => x.Id == 6)
             },
             new Prestamo{
                 Id = 5,
-                FechaDePrestamo = new DateTime(2024,1,20),
-                FechaDeDevolucion = new DateTime(2024,2,5),
+                FechaDePrestamo = new DateOnly(2024,1,20),
+                FechaDeDevolucion = new DateOnly(2024,2,5),
                 LibroPrestado = Libros.FirstOrDefault(x => x.Id == 5),
                 DatosDeSocio = SociosAfiliados.FirstOrDefault(x => x.Id == 8)
             },

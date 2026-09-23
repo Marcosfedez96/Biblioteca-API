@@ -11,9 +11,14 @@ namespace Biblioteca.Controllers
 
 
         [HttpGet]
-        public ActionResult<List<Socio>> GetItAll()
+        public ActionResult<List<Socio>> GetAll([FromQuery]string? nombre)
         {
-            return Ok(BasesDeDatos.SociosAfiliados);
+            var resultadoBusqueda = BasesDeDatos.SociosAfiliados.AsEnumerable();
+            if (!String.IsNullOrEmpty(nombre))
+            {
+                resultadoBusqueda = BasesDeDatos.SociosAfiliados.Where(x => x.Nombre.Contains(nombre,StringComparison.OrdinalIgnoreCase));
+            }
+            return Ok(resultadoBusqueda.ToList());
         }
 
         [HttpGet("{id:int}")]
