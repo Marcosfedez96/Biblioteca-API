@@ -8,7 +8,11 @@ namespace Biblioteca.Controllers
     [ApiController]
     public class SocioController : ControllerBase
     {
-
+        private readonly BibliotecaContext _context;
+        public SocioController(BibliotecaContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
         public ActionResult<List<Socio>> GetAll([FromQuery]string? nombre)
