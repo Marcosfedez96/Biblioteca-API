@@ -1,4 +1,4 @@
-﻿using Biblioteca.Models;
+﻿using Biblioteca_API.Models;
 
 namespace Biblioteca.DTOs
 {

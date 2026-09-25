@@ -1,4 +1,4 @@
-﻿namespace Biblioteca.Models
+﻿namespace Biblioteca_API.Models
 {
     public class Libro
     {

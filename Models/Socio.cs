@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace Biblioteca.Models
+namespace Biblioteca_API.Models
 {
     public class Socio
     {
