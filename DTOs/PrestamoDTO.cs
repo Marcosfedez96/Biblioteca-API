@@ -6,7 +6,7 @@ namespace Biblioteca.DTOs
     {
         public DateOnly FechaDePrestamo { set; get; }
         public DateOnly FechaDeDevolucion { set; get; }
-        public int IdLibroPrestado { set; get; }
+        public List<int> IdLibroPrestado { set; get; }
         public int IdDatosDeSocio { set; get; }
     }
 }

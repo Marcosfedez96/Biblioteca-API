@@ -4,6 +4,7 @@ using Biblioteca_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Biblioteca_API.Migrations
 {
     [DbContext(typeof(BibliotecaContext))]
-    partial class BibliotecaContextModelSnapshot : ModelSnapshot
+    [Migration("20260928015854_AgregarSocioIdAPrestamo")]
+    partial class AgregarSocioIdAPrestamo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,53 +59,6 @@ namespace Biblioteca_API.Migrations
                     b.HasIndex("PrestamoId");
 
                     b.ToTable("libros");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Autor = "James Clear",
-                            Genero = "Desarrollo personal",
-                            Isbn = 9783442178582L,
-                            Stock = 2,
-                            Titulo = "Habitos Atomicos"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Autor = "Gabriel García Márquez",
-                            Genero = "Realismo mágico",
-                            Isbn = 9780307474728L,
-                            Stock = 3,
-                            Titulo = "Cien Años de Soledad"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Autor = "George Orwell",
-                            Genero = "Ciencia ficción",
-                            Isbn = 9780451524935L,
-                            Stock = 4,
-                            Titulo = "1984"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Autor = "Antoine de Saint-Exupéry",
-                            Genero = "Fábula",
-                            Isbn = 9780156012195L,
-                            Stock = 5,
-                            Titulo = "El Principito"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Autor = "Yuval Noah Harari",
-                            Genero = "Divulgación histórica",
-                            Isbn = 9780062316097L,
-                            Stock = 2,
-                            Titulo = "Sapiens"
-                        });
                 });
 
             modelBuilder.Entity("Biblioteca_API.Models.Prestamo", b =>
@@ -152,29 +108,6 @@ namespace Biblioteca_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("socios");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Direccion = "calle falsa 123",
-                            Nombre = "Gaston",
-                            Telefono = "1928376452"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Direccion = "pozo de vargas 2258",
-                            Nombre = "Marcos",
-                            Telefono = "+5491124048045"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Direccion = "avenida de los patos 43",
-                            Nombre = "Valeria",
-                            Telefono = "3544344343"
-                        });
                 });
 
             modelBuilder.Entity("Biblioteca_API.Models.Libro", b =>

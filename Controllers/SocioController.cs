@@ -15,20 +15,20 @@ namespace Biblioteca.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Socio>> GetAll([FromQuery]string? nombre)
+        public async Task<ActionResult<List<Socio>>> GetAll([FromQuery]string? nombre)
         {
-            var resultadoBusqueda = BasesDeDatos.SociosAfiliados.AsEnumerable();
+            var resultadoBusqueda = _context.socios.AsQueryable();
             if (!String.IsNullOrEmpty(nombre))
             {
-                resultadoBusqueda = BasesDeDatos.SociosAfiliados.Where(x => x.Nombre.Contains(nombre,StringComparison.OrdinalIgnoreCase));
+                resultadoBusqueda = _context.socios.Where(x => x.Nombre.Contains(nombre,StringComparison.OrdinalIgnoreCase));
             }
-            return Ok(resultadoBusqueda.ToList());
+            return Ok(resultadoBusqueda);
         }
 
         [HttpGet("{id:int}")]
-        public ActionResult<Socio> GetById([FromRoute] int id)
+        public async Task<ActionResult<Socio>> GetById([FromRoute] int id)
         {
-            var socioEncontrado = BasesDeDatos.SociosAfiliados.FirstOrDefault(x => x.Id == id);
+            var socioEncontrado = _context.socios.FirstOrDefault(x => x.Id == id);
             if (socioEncontrado == null)
             {
                 return NotFound("El socio no esta registrado");
@@ -39,16 +39,17 @@ namespace Biblioteca.Controllers
             }
         }
         [HttpPost]
-        public ActionResult<Socio> CreateSocio([FromBody] Socio socio)
+        public async Task<ActionResult<Socio>> CreateSocio([FromBody] Socio socio)
         {
-            socio.Id = BasesDeDatos.SociosAfiliados.Any() ? BasesDeDatos.SociosAfiliados.Max(x => x.Id) + 1 : 1;
-            BasesDeDatos.SociosAfiliados.Add(socio);
+            //socio.Id = BasesDeDatos.SociosAfiliados.Any() ? BasesDeDatos.SociosAfiliados.Max(x => x.Id) + 1 : 1;
+            _context.socios.Add(socio);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = socio.Id }, socio);
         }
         [HttpPut("{id:int}")]
-        public ActionResult<Socio> EditSocio([FromRoute]int id, [FromBody]Socio socio)
+        public async Task<ActionResult<Socio>> EditSocio([FromRoute]int id, [FromBody]Socio socio)
         {
-            var resultadoBusqueda = BasesDeDatos.SociosAfiliados.FirstOrDefault(x => x.Id == id);
+            var resultadoBusqueda = _context.socios.FirstOrDefault(x => x.Id == id);
             if(resultadoBusqueda == null)
             {
                 return NotFound("El socio buscado no existe.");
@@ -58,22 +59,24 @@ namespace Biblioteca.Controllers
                 resultadoBusqueda.Nombre = socio.Nombre;
                 resultadoBusqueda.Telefono = socio.Telefono;
                 resultadoBusqueda.Direccion = socio.Direccion;
+                await _context.SaveChangesAsync();
                 return Ok("El socio ha sido modificado.");
             }
 
         }
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteSocio([FromRoute]int id)
+        public async Task<IActionResult> DeleteSocio([FromRoute]int id)
         {
-            var resultadoBusqueda = BasesDeDatos.SociosAfiliados.FirstOrDefault(x => x.Id == id);
+            var resultadoBusqueda = _context.socios.FirstOrDefault(x => x.Id == id);
             if(resultadoBusqueda == null)
             {
                 return NotFound("El socio no existe.");
             }
             else
             {
-                BasesDeDatos.SociosAfiliados.Remove(resultadoBusqueda);
-                return Ok("El socio fue eliminado del sistema.");
+                _context.socios.Remove(resultadoBusqueda);
+                await _context.SaveChangesAsync();
+                return NoContent();
             }
         }
     }

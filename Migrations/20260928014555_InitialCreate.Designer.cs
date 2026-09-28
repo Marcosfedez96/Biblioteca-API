@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Biblioteca_API.Migrations
 {
     [DbContext(typeof(BibliotecaContext))]
-    [Migration("20260925001111_InitialCreate")]
+    [Migration("20260928014555_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,6 +44,9 @@ namespace Biblioteca_API.Migrations
                     b.Property<long>("Isbn")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("PrestamoId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
@@ -52,6 +55,8 @@ namespace Biblioteca_API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PrestamoId");
 
                     b.ToTable("libros");
                 });
@@ -64,23 +69,18 @@ namespace Biblioteca_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DatosDeSocioId")
-                        .HasColumnType("int");
-
                     b.Property<DateOnly>("FechaDeDevolucion")
                         .HasColumnType("date");
 
                     b.Property<DateOnly>("FechaDePrestamo")
                         .HasColumnType("date");
 
-                    b.Property<int>("LibroPrestadoId")
+                    b.Property<int>("SocioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DatosDeSocioId");
-
-                    b.HasIndex("LibroPrestadoId");
+                    b.HasIndex("SocioId");
 
                     b.ToTable("prestamos");
                 });
@@ -107,26 +107,30 @@ namespace Biblioteca_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Socio");
+                    b.ToTable("socios");
+                });
+
+            modelBuilder.Entity("Biblioteca_API.Models.Libro", b =>
+                {
+                    b.HasOne("Biblioteca_API.Models.Prestamo", null)
+                        .WithMany("Libros")
+                        .HasForeignKey("PrestamoId");
                 });
 
             modelBuilder.Entity("Biblioteca_API.Models.Prestamo", b =>
                 {
-                    b.HasOne("Biblioteca_API.Models.Socio", "DatosDeSocio")
+                    b.HasOne("Biblioteca_API.Models.Socio", "Socio")
                         .WithMany()
-                        .HasForeignKey("DatosDeSocioId")
+                        .HasForeignKey("SocioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Biblioteca_API.Models.Libro", "LibroPrestado")
-                        .WithMany()
-                        .HasForeignKey("LibroPrestadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Socio");
+                });
 
-                    b.Navigation("DatosDeSocio");
-
-                    b.Navigation("LibroPrestado");
+            modelBuilder.Entity("Biblioteca_API.Models.Prestamo", b =>
+                {
+                    b.Navigation("Libros");
                 });
 #pragma warning restore 612, 618
         }

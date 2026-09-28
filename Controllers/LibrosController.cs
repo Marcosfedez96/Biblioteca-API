@@ -22,9 +22,9 @@ namespace Biblioteca.Controllers
             return Ok(librosEncontrados);
         }
         [HttpGet("{id:int}")]
-        public ActionResult<Libro> GetById([FromRoute]int id)
+        public async Task<ActionResult<Libro>> GetById([FromRoute]int id)
         {
-            var libroEncontrado = BasesDeDatos.Libros.FirstOrDefault(x => x.Id == id);
+            var libroEncontrado = _context.libros.FirstOrDefault(x => x.Id == id);
             if(libroEncontrado == null)
             {
                 return NotFound("el libro no se encontro.");
