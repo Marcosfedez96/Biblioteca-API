@@ -2,13 +2,11 @@
 
 namespace Biblioteca_API.DTOs
 {
-    public class PrestamoDto
+    public class ActualizarPrestamoDto
     {
-        public int Id { set; get; }
         public DateOnly FechaDePrestamo { set; get; }
         public DateOnly FechaDeDevolucion { set; get; }
-        public List<Libro> Libros { set; get; }
+        public List<int> IdLibroPrestado { set; get; }
         public int SocioId { set; get; }
-        public string SocioNombre { set; get; }
     }
 }

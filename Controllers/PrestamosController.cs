@@ -1,4 +1,5 @@
 ﻿using Biblioteca.DTOs;
+using Biblioteca_API.DTOs;
 using Biblioteca_API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace Biblioteca.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Prestamo>>> GetAll([FromQuery] DateOnly? fechaPrestamo, [FromQuery] bool? filtroDeudores)
+        public async Task<ActionResult<List<PrestamoDto>>> GetAll([FromQuery] DateOnly? fechaPrestamo, [FromQuery] bool? filtroDeudores)
         {
             IQueryable<Prestamo> resultadoBusqueda = _context.prestamos
                 .Include(p => p.Libros)
@@ -32,13 +33,21 @@ namespace Biblioteca.Controllers
             {
                 resultadoBusqueda = resultadoBusqueda.Where(x => x.FechaDeDevolucion > hoy);
             }
-
-            var lista = await resultadoBusqueda.ToListAsync();
-            return Ok(lista);
+            List<PrestamoDto> ListPrestamoDto = await resultadoBusqueda
+                .Select(p => new PrestamoDto
+                {
+                    Id = p.Id,
+                    FechaDePrestamo = p.FechaDePrestamo,
+                    FechaDeDevolucion = p.FechaDeDevolucion,
+                    Libros = p.Libros,
+                    SocioId = p.SocioId,
+                    SocioNombre = p.Socio.Nombre
+                }).ToListAsync();
+            return Ok(ListPrestamoDto);
         }
         
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Prestamo>> GetById([FromRoute]int id)
+        public async Task<ActionResult<PrestamoDto>> GetById([FromRoute]int id)
         {
             var resultadoBusqueda = await _context.prestamos
                 .Include(p => p.Libros)
@@ -48,23 +57,35 @@ namespace Biblioteca.Controllers
             {
                 return NotFound($"El prestamo con la id {id} no existe en el sistema");
             }
-            else
+
+            PrestamoDto prestamoDto = new PrestamoDto
             {
-                return Ok(resultadoBusqueda);
-            }
+                Id = resultadoBusqueda.Id,
+                FechaDePrestamo = resultadoBusqueda.FechaDePrestamo,
+                FechaDeDevolucion = resultadoBusqueda.FechaDeDevolucion,
+                Libros = resultadoBusqueda.Libros,
+                SocioId = resultadoBusqueda.SocioId,
+                SocioNombre = resultadoBusqueda.Socio.Nombre
+            };
+            return Ok(prestamoDto);
+            
         }
         [HttpPost]
-        public async Task<IActionResult> PostPrestamo([FromBody]PrestamoDTO prestamoDTO)
+        public async Task<IActionResult> PostPrestamo([FromBody]CrearPrestamoDto crearPrestamoDto)
         {
             var librosElegidos = await _context.libros
-                .Where(x => prestamoDTO.IdLibroPrestado.Contains(x.Id))
+                .Where(x => crearPrestamoDto.IdLibroPrestado.Contains(x.Id))
                 .ToListAsync();
             var socio = await _context.socios
-                .FirstOrDefaultAsync(x => x.Id == prestamoDTO.IdDatosDeSocio);
+                .FirstOrDefaultAsync(x => x.Id == crearPrestamoDto.IdDatosDeSocio);
+            if(socio == null)
+            {
+                return BadRequest("el socio no existe.");
+            }
             Prestamo prestamo = new Prestamo
             {
-                FechaDePrestamo = prestamoDTO.FechaDePrestamo,
-                FechaDeDevolucion = prestamoDTO.FechaDeDevolucion,
+                FechaDePrestamo = crearPrestamoDto.FechaDePrestamo,
+                FechaDeDevolucion = crearPrestamoDto.FechaDeDevolucion,
                 Libros = librosElegidos,
                 Socio = socio
 
@@ -75,7 +96,7 @@ namespace Biblioteca.Controllers
            
         }
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> PutPrestamos([FromRoute]int id, [FromBody]PrestamoDTO prestamoDTO)
+        public async Task<IActionResult> PutPrestamos([FromRoute]int id, [FromBody] ActualizarPrestamoDto actualizarPrestamoDto)
         {
             var prestamo = await _context.prestamos
                 .Include(l=>l.Libros)
@@ -84,13 +105,14 @@ namespace Biblioteca.Controllers
             {
                 return NotFound("El prestamo que busca no existe.");
             }
-            var librosElegidos = await _context.libros.Where(x => prestamoDTO.IdLibroPrestado.Contains(x.Id)).ToListAsync();
 
-            var socio = await _context.socios.FirstOrDefaultAsync(x => x.Id == prestamoDTO.IdDatosDeSocio);
 
-            prestamo.FechaDePrestamo = prestamoDTO.FechaDePrestamo;
-            prestamo.FechaDeDevolucion = prestamoDTO.FechaDeDevolucion;
-            prestamo.SocioId = prestamoDTO.IdDatosDeSocio;
+            var librosElegidos = await _context.libros.Where(x => actualizarPrestamoDto.IdLibroPrestado.Contains(x.Id)).ToListAsync();
+
+
+            prestamo.FechaDePrestamo = actualizarPrestamoDto.FechaDePrestamo;
+            prestamo.FechaDeDevolucion = actualizarPrestamoDto.FechaDeDevolucion;
+            prestamo.SocioId = actualizarPrestamoDto.SocioId;
 
             prestamo.Libros.Clear();
             foreach(var libro in librosElegidos)

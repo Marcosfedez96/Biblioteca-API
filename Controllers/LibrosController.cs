@@ -37,7 +37,6 @@ namespace Biblioteca.Controllers
         [HttpPost]
         public async Task<IActionResult> PostLibro([FromBody] Libro libro)
         {
-            //libro.Id = BasesDeDatos.Libros.Any() ? BasesDeDatos.Libros.Max(x => x.Id) + 1 : 1;
             _context.libros.Add(libro);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = libro.Id }, libro);
